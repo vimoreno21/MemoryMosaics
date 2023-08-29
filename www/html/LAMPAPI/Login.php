@@ -1,3 +1,4 @@
+
 <?php
 
 	$inData = getRequestInfo();
@@ -21,6 +22,10 @@
 
 		if( $row = $result->fetch_assoc()  )
 		{
+			$update_date_login = $conn->prepare("UPDATE Users SET DateLastLoggedIn =  now() where ID = ?");
+			$update_date_login->bind_param("s", $row['ID']);
+			$update_date_login->execute();
+
 			returnWithInfo( $row['FirstName'], $row['LastName'], $row['ID'] );
 		}
 		else
