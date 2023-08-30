@@ -22,8 +22,15 @@ body{
     width: 100%;
 }
 
-h1{
+.login-header{
     text-align: center;
+    position: relative;
+    letter-spacing: .2rem;
+    text-transform: uppercase;
+    background: -webkit-linear-gradient(45deg,#620355, #c82cb1, #fb53e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transform: translate(0px, -40px);
 }
 
 .login-box{
