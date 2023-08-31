@@ -1,35 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MemoryMosaics Sign Up</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="container">
-        <div class="signup-box">
-            <form class="signup">
-                <div class="form-group">
-                    <!--first name-->
-                </div>
-                <div class="form-group">
-                    <!--last name-->
-                </div>
-                <div class="form-group">
-                    <!--username-->
-                </div>
-                <div class="form-group">
-                    <!--phone number-->
-                </div>
-                <div class="form-group">
-                    <!--password-->
-                </div>
-                <div class="form-group">
-                    <!--confirm password-->
-                </div>
-            </form>
-        </div>
-    </div>
-  </body>
-</html>
+<form class="signup" action="LAMPAPI/Register.php">
+          <div class="form-group">
+            <!--first name-->
+            <input
+              type="text"
+              placeholder="First Name"
+              id="firstName"
+              name="firstName"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <!--last name-->
+            <input
+              type="text"
+              placeholder="Last Name"
+              id="lastName"
+              name="lastName"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <!--username-->
+            <input
+              type="text"
+              placeholder="Username"
+              id="login"
+              name="login"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <!--password-->
+            <input
+              type="password"
+              placeholder="Password"
+              id="password"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <button class="register-btn" type="submit">Sign Up</button>
+          </div>
+          <div class="form-group">
+            <p>Already Registered? <a href="index.html">Login</a></p>
+          </div>
+        </form>
