@@ -1,11 +1,12 @@
 <?php
 	$inData = getRequestInfo();
 
-  // this info is passed in by the user
+    // this info is passed in by the user
 	$firstName = $inData["FirstName"];
 	$lastName = $inData["LastName"];
-  $login = $inData["Login"];
+    $login = $inData["Login"];
 	$password = $inData["Password"];
+
 
 	$conn = new mysqli("localhost", "AdminAccount", "wearetesting", "COP4331");
 
@@ -15,14 +16,27 @@
 	} 
 	else
 	{
-    // default date logged in will be date created (until user logs in again)
-		$stmt = $conn->prepare("INSERT into Users (DateCreated, DateLastLoggedIn, FirstName,LastName,Login,Password) VALUES(now(),now(),'$firstName','$lastName','$login','$password')");
+		$checkLogin = $conn->prepare("SELECT count(1) from Users WHERE Login = ?");
 
-		$stmt->execute();
+		$checkLogin->bind_param("s", $login);
+		$checkLogin->execute();
+		$checkLogin->bind_result($foundResult);
+		$checkLogin->fetch();
+		$checkLogin->close();
 
+		if ($foundResult)
+		{
+			returnWithError("Login username already exists. Try again with a different login.");
+		}
+		else
+		{
+			// default date logged in will be date created (until user logs in again)
+			$stmt = $conn->prepare("INSERT into Users (DateCreated, DateLastLoggedIn, FirstName,LastName,Login,Password) VALUES(now(),now(),'$firstName','$lastName','$login','$password')");
+			$stmt->execute();
+			returnWithError("");
+		}
 		$stmt->close();
 		$conn->close();
-		returnWithError("");
 	}
 
 	function getRequestInfo()
