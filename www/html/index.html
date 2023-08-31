@@ -4,24 +4,32 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MemoryMosaics Login</title>
-    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="css/style.css" />
     <script
       src="https://kit.fontawesome.com/2b070e02a1.js"
       crossorigin="anonymous"
     ></script>
   </head>
   <body>
-      <div class="container">
-          <img src="polaroid.png" alt="Polaroid background" width="500" height="600" class="login-img-background">
-          <div class="login-box">
-          <h1 class="login-header">Memory Mosaics</h1>
-        <form class="login">
+    <div class="container">
+      <img
+        src="polaroid.png"
+        alt="Polaroid background"
+        width="500"
+        height="600"
+        class="login-img-background"
+      />
+      <div class="login-box">
+        <h1 class="login-header">Memory Mosaics</h1>
+        <form class="login" action="LAMPAPI/Login.php">
           <div class="form-group">
             <input
               type="text"
               placeholder="Username"
-              id="username"
+              id="Login"
+              name="Login"
               class="form-control"
+              required
             />
           </div>
           <div class="form-group">
@@ -30,21 +38,20 @@
               placeholder="Password"
               id="password"
               class="form-control"
+              required
             />
           </div>
           <div class="form-group">
             <label for="">
-                <input type="checkbox", name="rememberme" id="rememberme">
-                Remember Password
+              <input type="checkbox" , name="rememberme" id="rememberme" />
+              Remember Password
             </label>
           </div>
           <div class="form-group">
-            <button class="full-btn">Login</button>
+            <button class="full-btn" type="submit">Login</button>
           </div>
           <div class="form-group">
-            <p>
-                Not Registered? <a href="signup.html">Sign Up</a>
-            </p>
+            <p>Not Registered? <a href="signup.html">Sign Up</a></p>
           </div>
         </form>
       </div>
