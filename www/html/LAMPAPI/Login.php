@@ -1,4 +1,3 @@
-
 <?php
 
 	$inData = getRequestInfo();
@@ -6,6 +5,8 @@
 	$id = 0;
 	$firstName = "";
 	$lastName = "";
+	$login = "";
+	$password = "";
 	
 	$conn = new mysqli("localhost", "AdminAccount", "wearetesting", "COP4331"); 	
 
@@ -16,7 +17,20 @@
 	else
 	{
 		$stmt = $conn->prepare("SELECT ID,FirstName,LastName FROM Users WHERE Login=? AND Password =?");
-		$stmt->bind_param("ss", $inData["Login"], $inData["Password"]);
+
+		// if form is submitted with post, retrieve form data
+		if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] === "POST")
+		{	
+			$login = $inData['Login'];
+			$password = $inData['Password'];
+		}
+		else
+		{
+			echo 'form wasnt submitted or wasnt submitted with post';
+		}
+
+		$stmt->bind_param("ss", $login, $password);
+
 		$stmt->execute();
 		$result = $stmt->get_result();
 
