@@ -7,19 +7,11 @@
   $login = $_POST['login'];
   $password = $_POST['password'];
   $date = date('Y-m-d H:i:s');
- 
-  echo $login;
-  echo "mr bestyy";
-  echo "mr bestyy";
-
 
   $conn = mysqli_connect("localhost", "AdminAccount", "wearetesting", "COP4331");
-  echo $conn ? 'connected' : 'not connected';
-  
   
   if (!$conn)
   {
-	echo "byyyyye";
 	die("Connection failed: " . mysqli_connect_error());
 	//header('Location: ../signup.html');
   }
