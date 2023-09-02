@@ -1,59 +1,75 @@
 <?php
-	$inData = getRequestInfo();
+  session_start();
 
-    // this info is passed in by the user
-	$firstName = $inData["FirstName"];
-	$lastName = $inData["LastName"];
-    $login = $inData["Login"];
-	$password = $inData["Password"];
+  // this info is passed in by the user
+  $firstName = $_POST['firstName'];
+  $lastName = $_POST['lastName'];
+  $login = $_POST['login'];
+  $password = $_POST['password'];
+  $date = date('Y-m-d H:i:s');
+ 
+  echo $login;
+  echo "mr bestyy";
+  echo "mr bestyy";
 
 
-	$conn = new mysqli("localhost", "AdminAccount", "wearetesting", "COP4331");
-
-	if ($conn->connect_error)
+  $conn = mysqli_connect("localhost", "AdminAccount", "wearetesting", "COP4331");
+  echo $conn ? 'connected' : 'not connected';
+  
+  
+  if (!$conn)
+  {
+	echo "byyyyye";
+	die("Connection failed: " . mysqli_connect_error());
+	//header('Location: ../signup.html');
+  }
+ 
+  
+  
+  else
+  {
+	$checkLogin = $conn->prepare("SELECT * from Users WHERE Login = ?");
+	$checkLogin->bind_param("s", $login);
+	if($checkLogin->execute()) {
+	$curr_user = mysqli_fetch_assoc(mysqli_stmt_get_result($checkLogin));
+	}
+	    
+	
+	if ($curr_user)
 	{
-		returnWithError( $conn->connect_error );
-	} 
+		returnWithError("Login username already exists. Try again with a different login.");
+		header('Location: ../signup.php?msg=1');
+	}
 	else
 	{
-		$checkLogin = $conn->prepare("SELECT count(1) from Users WHERE Login = ?");
-
-		$checkLogin->bind_param("s", $login);
-		$checkLogin->execute();
-		$checkLogin->bind_result($foundResult);
-		$checkLogin->fetch();
-		$checkLogin->close();
-
-		if ($foundResult)
-		{
-			returnWithError("Login username already exists. Try again with a different login.");
+		// default date logged in will be date created (until user logs in again)
+		
+		$stmt = $conn->prepare("INSERT into Users (DateCreated, DateLastLoggedIn, FirstName,LastName,Login,Password) VALUES ('$date','$date','$firstName','$lastName','$login','$password')");
+		if($stmt->execute()) {
+		header('Location: ../signup.php?msg=2');
 		}
-		else
-		{
-			// default date logged in will be date created (until user logs in again)
-			$stmt = $conn->prepare("INSERT into Users (DateCreated, DateLastLoggedIn, FirstName,LastName,Login,Password) VALUES(now(),now(),'$firstName','$lastName','$login','$password')");
-			$stmt->execute();
-			returnWithError("");
-		}
-		$stmt->close();
-		$conn->close();
 	}
+  }
+ 
+  $stmt->close();
+  $conn->close();
+  
 
-	function getRequestInfo()
-	{
-		return json_decode(file_get_contents('php://input'), true);
-	}
+function getRequestInfo()
+{
+	return json_decode(file_get_contents('php://input'), true);
+}
 
-	function sendResultInfoAsJson( $obj )
-	{
-		header('Content-type: application/json');
-		echo $obj;
-	}
-	
-	function returnWithError( $err )
-	{
-		$retValue = '{"error":"' . $err . '"}';
-		sendResultInfoAsJson( $retValue );
-	}
+function sendResultInfoAsJson( $obj )
+{
+	header('Content-type: application/json');
+	echo $obj;
+}
+
+function returnWithError( $err )
+{
+	$retValue = '{"error":"' . $err . '"}';
+	sendResultInfoAsJson( $retValue );
+}
 	
 ?>
