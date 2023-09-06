@@ -12,22 +12,21 @@
   </head>
   <body>
     <div class="container">
-      <img
+      <!--<img
         src="images/polaroid.png"
         alt="Polaroid background"
         width="500"
         height="600"
         class="login-img-background"
-      />
+      />-->
       <div class="login-box">
         <h1 class="login-header">Memory Mosaics</h1>
-        <form class="login" action="LAMPAPI/Login.php" method="post">
           <div class="form-group">
             <input
               type="text"
               placeholder="Username"
               id="Login"
-              name="Login"
+              name="login"
               class="form-control"
               required
             />
@@ -36,8 +35,8 @@
             <input
               type="password"
               placeholder="Password"
-              id="password"
-              name="Password" 
+              id="Password"
+              name="password"
               class="form-control"
               required
             />
@@ -49,13 +48,15 @@
             </label>
           </div>
           <div class="form-group">
-            <button class="full-btn" name="submit" type="submit">Login</button>
+            <button class="full-btn" id="submit-login-btn" onclick="login()">Login</button>
           </div>
           <div class="form-group">
-            <p>Not Registered? <a href="signup.html">Sign Up</a></p>
+            <p>Not Registered? <a href="signup.php">Sign Up</a></p>
           </div>
-        </form>
+          <span id="loginResult"></span>
+
       </div>
     </div>
+    <script src="js/login.js"></script>
   </body>
 </html>
