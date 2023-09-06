@@ -1,53 +1,43 @@
 <?php
-
 	$inData = getRequestInfo();
-	
-	$id = 0;
-	$firstName = "";
-	$lastName = "";
-	$login = "";
-	$password = "";
-	
-	$conn = new mysqli("localhost", "AdminAccount", "wearetesting", "COP4331"); 	
+  	// this info is passed in by the user
+	$loginData = $inData['Login'];
+	$passwordData = $inData['Password'];
+  	$date = date('Y-m-d H:i:s');
 
-	if( $conn->connect_error )
+
+	$conn = mysqli_connect("localhost", "AdminAccount", "wearetesting", "COP4331");
+	if (!$conn)
 	{
-		returnWithError( $conn->connect_error );
+		die("Connection failed: " . mysqli_connect_error());
 	}
+
 	else
 	{
-		$stmt = $conn->prepare("SELECT ID,FirstName,LastName FROM Users WHERE Login=? AND Password =?");
+		$checkLogin = $conn->prepare("SELECT ID,FirstName,LastName FROM Users WHERE Login=? AND Password =?");
+		$checkLogin->bind_param("ss", $loginData, $passwordData);
 
-		// if form is submitted with post, retrieve form data
-		if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] === "POST")
-		{	
-			$login = $inData['Login'];
-			$password = $inData['Password'];
-		}
-		else
+		$checkLogin->execute();
+
+		$result = $checkLogin->get_result();
+
+		if( $curr_user = $result->fetch_assoc() ) 
 		{
-			echo 'form wasnt submitted or wasnt submitted with post';
-		}
-
-		$stmt->bind_param("ss", $login, $password);
-
-		$stmt->execute();
-		$result = $stmt->get_result();
-
-		if( $row = $result->fetch_assoc()  )
-		{
-			$update_date_login = $conn->prepare("UPDATE Users SET DateLastLoggedIn =  now() where ID = ?");
-			$update_date_login->bind_param("s", $row['ID']);
+			$update_date_login = $conn->prepare("UPDATE Users SET DateLastLoggedIn = ? where ID = ?");
+			$update_date_login->bind_param("ss", $date, $curr_user['ID']);
 			$update_date_login->execute();
 
-			returnWithInfo( $row['FirstName'], $row['LastName'], $row['ID'] );
+			returnWithInfo( $curr_user['FirstName'], $curr_user['LastName'], $curr_user['ID'] );
+			$update_date_login->close();
 		}
+
+
 		else
 		{
 			returnWithError("No Records Found");
 		}
 
-		$stmt->close();
+		$checkLogin->close();
 		$conn->close();
 	}
 	
