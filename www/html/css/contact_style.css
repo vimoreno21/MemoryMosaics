@@ -12,7 +12,9 @@ body{
     width: 100%;
     background: linear-gradient(45deg, #E91E63, #42A5F5);
 }
-
+button{
+    cursor: pointer;
+}
 .container{
     /* position: relative;
     display:flex;
@@ -42,7 +44,7 @@ body{
   padding: 1rem;
 }
 
-/* for the search  */
+/*  the area for the search bar and result box */
 .search-box {
   margin-top: 100px;
   display: flex;
@@ -52,15 +54,17 @@ body{
   align-items: center;
   justify-content: center;
   width: 100%;
+  flex-direction: column;
 }
+
+/* where you type to search */
 .search-bar {
-    width: 100%;
     max-width: 700px;
     background: rgba(255, 255, 255, 0.2);
-    display: flex;
+    display: absolute;
     align-items: center;
-    border-radius: 60px;
     padding: 10px 20px;
+    border:3px solid #e9e9e9;
     backdrop-filter: blur (4px) saturate(180%);
 }
 .search-bar input{
@@ -76,23 +80,64 @@ body{
     color:#cac7ff;
 }
 
-.search-bar button img{
-    width: 25px;
+/* the result box */
+.autocomplete-list{
+    list-style: none;
+    padding: none;
+    margin:unset;
+    width: 100%;
+}
+.autocomplete-list button {
+    border: unset;
+    background: unset;
+    width: 100%;
+    max-width: 700px;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    padding: 1em;
+    font-size: 17px;
 }
 
-.search-bar button{
+.autocomplete-list ul{
+    border-top: 1px solid #999;
+    padding: 15px 10px;
+    width: 100%;
+}
+.autocomplete-list li{
+    border:3px solid #e9e9e9;
+    border-top: unset;
+}
+.autocomplete-list li:hover {
+    background: #f7f7f7;
+}
+.autocomplete-wrapper{
+    display:inline-block;
+    max-width: 700px;
+}
+
+
+/* the search button */
+.btn-submit img{
+    width: 25px;
+}
+.btn-submit{
     border: 0; 
     border-radius: 50%; 
     width: 60px;
     height: 60px;
     background: #cac7ff;
     cursor: pointer;
+    font-size: 22px;
 }
+
 /* for where the polaroid are */
 .wrapper {
   width: 100%;
   padding: 0 2rem;
   text-align: center;
+  margin-top: 50px;
+  position: relative;
 }
 
 /* white polaroid */
@@ -113,7 +158,8 @@ body{
 .caption {
   font-size: 1.8rem;
   text-align: center;
-  line-height: 3em;
+  line-height: 1.5em;
+  padding: 15px;
 }
 
 /* the whole polaroid */

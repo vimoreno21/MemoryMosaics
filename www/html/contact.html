@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Contact Manager</title>
-        <link rel="stylesheet" href="contact_style.css">
+        <link rel="stylesheet" href="css/contact_style.css">
         <script src="https://kit.fontawesome.com/3c685aa23e.js" crossorigin="anonymous"></script>
     </head>
     <body>
@@ -22,10 +22,19 @@
             </form>
             <div class="container">
                 <div class="search-box">
-                    <div class="search-bar">
-                        <input type="text" placeholder="Search" autocomplete="off">
-                        <button type-"submit"><img<i class="fa-solid fa-magnifying-glass"></i>
-                    </div>
+                    <form action="" autocomplete="off">
+                        <div id="autocomplete-wrapper" class="autocomplete-wrapper">
+                            <div class="search-bar">
+                                <input id="automcomplete-input" type="text" placeholder="Search" autocomplete="off">
+                                <button type-"submit" class="btn-submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                            <div class="result-box">
+                                <ul class="autocomplete-list">
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                    <script src="js/autocomplete.js"></script>
                 </div>
                 <h2>Your Contacts</h2>
                 <ul id="contactList">
@@ -35,51 +44,18 @@
                 <div class="wrapper">
                     <div class="item">
                         <div class="polaroid"><img src="https://image.ibb.co/b8UJBc/administration_architecture_big_ben_221166.jpg">
-                            <div class="caption">Victoria Moreno</div>
+                            <div class="caption">Victoria Morenoooooooo hello</div>
                         </div>
                     </div>
-                    <div class="item">
-                        <div class="polaroid"><img src="https://image.ibb.co/b8UJBc/administration_architecture_big_ben_221166.jpg">
-                            <div class="caption">Juan Carlos</div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="polaroid"><img src="https://image.ibb.co/b8UJBc/administration_architecture_big_ben_221166.jpg">
-                            <div class="caption">Isabella Moya</div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="polaroid"><img src="https://image.ibb.co/b8UJBc/administration_architecture_big_ben_221166.jpg">
-                            <div class="caption">Rachel Zaremba</div>
-                        </div>
-                    </div>
-
+            
                     <div class="item">
                         <div class="polaroid"><img src="https://image.ibb.co/mmyvrc/anniversary_balloons_birthday_68369.jpg">
                             <div class="caption">Lucas Cruz</div>
                         </div>
                     </div>
-
-                    <div class="item">
-                        <div class="polaroid"><img src="https://image.ibb.co/hQaarc/antique_blur_camera_828378.jpg">
-                            <div class="caption">Vintage life </div>
-                        </div>
-                    </div>
-
-                    <div class="item">
-                        <div class="polaroid"><img src="https://image.ibb.co/crFarc/pexels_photo_100756.jpg">
-                            <div class="caption">Summer Day</div>
-                        </div>
-                    </div>
-
-                    <div class="item">
-                        <div class="polaroid"><img src="https://image.ibb.co/fvekrc/action_adult_art_673649.jpg">
-                            <div class="caption">Art</div>
-                        </div>
-                    </div>
                 </div>
             </div>
-        </main>
+        </main>    
 
         <footer>
             <p>&copy; 2023 Contact Manager</p>
