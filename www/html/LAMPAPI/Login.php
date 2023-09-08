@@ -1,4 +1,6 @@
 <?php
+	header('Access-Control-Allow-Origin: *');
+
 	$inData = getRequestInfo();
   	// this info is passed in by the user
 	$loginData = $inData['Login'];
