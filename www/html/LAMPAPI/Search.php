@@ -1,4 +1,6 @@
 <?php
+	header('Access-Control-Allow-Origin: *');
+
 	$inData = getRequestInfo();
 	
 	$searchResults = "";
@@ -16,7 +18,7 @@
 		UNION SELECT FirstName,LastName,Phone,Email from Contacts where LastName like ?
 		UNION SELECT FirstName,LastName,Phone,Email from Contacts where Phone like ?
 		UNION SELECT FirstName,LastName,Phone,Email from Contacts where Email like ?");
-    
+		
 		$searchInput = "%" . $inData["search"] . "%";
 		$stmt->bind_param("ssss", $searchInput, $searchInput, $searchInput, $searchInput);
 
