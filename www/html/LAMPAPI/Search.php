@@ -14,13 +14,13 @@
 	else
 	{
 
-		$stmt = $conn->prepare("SELECT FirstName,LastName,Phone,Email from Contacts where FirstName like ?
-		UNION SELECT FirstName,LastName,Phone,Email from Contacts where LastName like ?
-		UNION SELECT FirstName,LastName,Phone,Email from Contacts where Phone like ?
-		UNION SELECT FirstName,LastName,Phone,Email from Contacts where Email like ?");
+		$stmt = $conn->prepare("SELECT FirstName,LastName,Phone,Email from Contacts where FirstName like ? and UserID = ?
+		UNION SELECT FirstName,LastName,Phone,Email from Contacts where LastName like ? and UserID = ?
+		UNION SELECT FirstName,LastName,Phone,Email from Contacts where Phone like ? and UserID = ? 
+		UNION SELECT FirstName,LastName,Phone,Email from Contacts where Email like ? and UserID = ?");
 		
 		$searchInput = "%" . $inData["search"] . "%";
-		$stmt->bind_param("ssss", $searchInput, $searchInput, $searchInput, $searchInput);
+		$stmt->bind_param("ssssssss", $searchInput, $inData["UserID"], $searchInput, $inData["UserID"], $searchInput, $inData["UserID"], $searchInput, $inData["UserID"]);
 
 		$stmt->execute();
 		
