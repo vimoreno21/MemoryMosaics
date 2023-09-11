@@ -8,18 +8,19 @@
   </head>
   <body>
     <div class="container">
-      <img
+      <!--<img
         src="images/polaroid.png"
         alt="Polaroid background"
         width="500"
         height="600"
         class="signup-img-background"
-      />
+      />-->
       <div class="signup-box">
+      <form name="signup" method="post">
         <h1 class="signup-header">Memory Mosaics</h1>
         <h2 class="signup-label">Sign Up</h2>
-        <form class="signup" action="LAMPAPI/Register.php" method="post">
           <div class="form-group">
+          <div id="signupResult"></div>
             <!--first name-->
             <input
               type="text"
@@ -27,7 +28,6 @@
               id="firstName"
               name="firstName"
               class="form-control"
-              required
             />
           </div>
           <div class="form-group">
@@ -38,7 +38,6 @@
               id="lastName"
               name="lastName"
               class="form-control"
-              required
             />
           </div>
           <div class="form-group">
@@ -49,7 +48,6 @@
               id="login"
               name="login"
               class="form-control"
-              required
             />
           </div>
           <div class="form-group">
@@ -58,17 +56,18 @@
               type="password"
               placeholder="Password"
               id="password"
+              name="password"
               class="form-control"
-              required
             />
           </div>
           <div class="form-group">
-            <button class="register-btn" type="submit">Sign Up</button>
+            <button type="submit" id="submit-signup-btn">Sign Up</>
           </div>
           <div class="form-group">
             <p>Already Registered? <a href="index.html">Login</a></p>
           </div>
         </form>
+        <script src="js/signup.js"></script>
       </div>
     </div>
   </body>
