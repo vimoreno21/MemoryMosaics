@@ -1,5 +1,3 @@
-console.log("Script is running");
-
 const urlBase = 'http://165.227.208.98/LAMPAPI';
 
 function setCookie(name, value, days) {
@@ -21,10 +19,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const inputLastName = document.getElementById("lastName").value;
         const username = document.getElementById("login").value;
         const password = document.getElementById("password").value;
+        const usernameError = document.getElementById("username-error");
 
+        // Reset the error message initially
+        usernameError.textContent = "";
+        
         document.getElementById("signupResult").innerHTML = "";
-        console.log(username);
-        console.log(password);
         // Check if any required fields are empty
         if (!inputFirstName || !inputLastName || !username || !password) {
             document.getElementById("signupResult").innerHTML = "Please fill in all required fields.";
@@ -48,18 +48,18 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             xhr.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-
-                    let jsonObject = JSON.parse(this.responseText);
+            
+		                let jsonObject = JSON.parse(this.responseText);
                     userId = jsonObject.ID;
 
                     if (jsonObject.error == "Login username already exists. Try again with a different login.") {
-                        alert("Username is already taken. Please choose a different username.");
+                        usernameError.textContent = "Username is already taken. Please choose a different username.";
                         return;
                     }
 
                     // Registration successful, you can handle the success scenario here
                     document.getElementById("signupResult").innerHTML = "Registration successful!";
-
+                    
                     setCookie('username', username, 1); // Set it to expire in 1 day
                     // You can redirect to a login page or another page as needed.
                      window.location.href = "index.html";
