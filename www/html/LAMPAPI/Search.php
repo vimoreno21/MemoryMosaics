@@ -114,7 +114,7 @@
 
         function returnWithInfo( $firstName, $lastName, $phone, $email )
         {
-                $retValue = '{"FirstName":[' . $firstName . '],"LastName":['.$lastName.'],"Phone":['.$phone.'],"Email":['.$email.'],error":""}';
+                $retValue = '{"FirstName":[' . $firstName . '],"LastName":['.$lastName.'],"Phone":['.$phone.'],"Email":['.$email.'],error:""}';
                 sendResultInfoAsJson( $retValue );
         }
 
