@@ -14,37 +14,67 @@
         }
         else
         {
-
-                $stmt = $conn->prepare("SELECT FirstName,LastName,Phone,Email from Contacts where FirstName like ? and UserID = ?
-                UNION SELECT FirstName,LastName,Phone,Email from Contacts where LastName like ? and UserID = ?
-                UNION SELECT FirstName,LastName,Phone,Email from Contacts where Phone like ? and UserID = ? 
-                UNION SELECT FirstName,LastName,Phone,Email from Contacts where Email like ? and UserID = ?");
-
-                $searchInput = "%" . $inData["search"] . "%";
-                $stmt->bind_param("ssssssss", $searchInput, $inData["UserID"], $searchInput, $inData["UserID"], $searchInput, $inData["UserID"], $searchInput, $inData["UserID"]);
-
-                $stmt->execute();
-
-                $result = $stmt->get_result();
-
-                while($row = $result->fetch_assoc())
+                if ($inData["search"] == "" || $inData["search"] == NULL)
                 {
-                        if( $searchCount > 0 )
+                        $stmt = $conn->prepare("SELECT * from Contacts where UserID = ?");
+                        $stmt->bind_param("s", $inData["UserID"]);
+
+                        $stmt->execute();
+
+                        $result = $stmt->get_result();
+                        while($row = $result->fetch_assoc())
+
                         {
-                                $firstName .= ",";
-                                $lastName .= ",";
-                                $phone .= ",";
-                                $email .= ",";
-                        }
-                        $searchCount++;
 
-                        $firstName .= $row["FirstName"];
-                        $lastName .= $row["LastName"];
-                        $phone .= $row["Phone"];
-                        $email .= $row["Email"];
-
+                if( $searchCount > 0 )
+                {
+                        $firstName .= ",";
+                        $lastName .= ",";
+                        $phone .= ",";
+                        $email .= ",";
                 }
+                $searchCount++;
 
+                $firstName .= $row["FirstName"];
+                $lastName .= $row["LastName"];
+                $phone .= $row["Phone"];
+                                $email .= $row["Email"];
+                        }
+            returnWithInfo( $firstName, $lastName, $phone, $email );
+        }
+
+                else
+                {
+            $stmt = $conn->prepare("SELECT FirstName,LastName,Phone,Email from Contacts where FirstName like ? and UserID = ?
+            UNION SELECT FirstName,LastName,Phone,Email from Contacts where LastName like ? and UserID = ?
+            UNION SELECT FirstName,LastName,Phone,Email from Contacts where Phone like ? and UserID = ? 
+            UNION SELECT FirstName,LastName,Phone,Email from Contacts where Email like ? and UserID = ?");
+
+            $searchInput = "%" . $inData["search"] . "%";
+            $stmt->bind_param("ssssssss", $searchInput, $inData["UserID"], $searchInput, $inData["UserID"], $searchInput, $inData["UserID"], $searchInput, $inData["UserID"]);
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            while($row = $result->fetch_assoc())
+            {
+                if( $searchCount > 0 )
+                {
+                    $firstName .= ",";
+                    $lastName .= ",";
+                    $phone .= ",";
+                    $email .= ",";
+               }
+                $searchCount++;
+
+                $firstName .= $row["FirstName"];
+                $lastName .= $row["LastName"];
+                $phone .= $row["Phone"];
+                $email .= $row["Email"];
+
+
+            }
 
                 if( $searchCount == 0 )
                 {
@@ -54,6 +84,9 @@
                 {
                         returnWithInfo( $firstName, $lastName, $phone, $email );
                 }
+        }
+
+
                 if ($stmt != NULL)
                 {
 
@@ -86,3 +119,4 @@
         }
 
 ?>
+
