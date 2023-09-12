@@ -11,10 +11,21 @@ function getRememberPasswordValue() {
 }
 
 // Function to set a cookie
+/*
 function setCookie(name, value, expires) {
-  document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+  // Add "Secure" attribute to enforce HTTPS-only transmission
+  const secureFlag = location.protocol === "https:" ? "; secure" : "";
+  
+  // Set "SameSite" attribute to "Lax"
+  const sameSiteAttribute = "; samesite=Lax";
+  
+  // Combine all attributes
+  const cookieAttributes = `expires=${expires}; path=/${secureFlag}${sameSiteAttribute}`;
+  
+  document.cookie = `${name}=${value}; ${cookieAttributes}`;
 }
-
+*/
+/*
 function getCookie(name) {
   const cookies = document.cookie;
   const cookieArray = cookies.split('; ');
@@ -26,23 +37,48 @@ function getCookie(name) {
   }
   return null;
 }
+*/
+
+// Function to set a value in session storage
+function setSessionStorageItem(key, value) {
+  sessionStorage.setItem(key, value);
+}
+
+// Function to retrieve a value from session storage
+function getSessionStorageItem(key) {
+  return sessionStorage.getItem(key);
+}
 
 // Check for the 'username' cookie and populate the login field
 document.addEventListener("DOMContentLoaded", function () {
   const loginField = document.getElementById("Login");
   const rememberPasswordCheckbox = document.getElementById("rememberme");
   const loginButton = document.getElementById("loginButton");
-  const usernameCookie = getCookie('username');
+  //const usernameCookie = getCookie('username');
+  const usernameSession = getSessionStorageItem('username');
   const passwordField = document.getElementById("Password");
 
+  /*
   if (usernameCookie) {
     loginField.value = usernameCookie;
   }
+  */
+  
+  if (usernameSession) {
+    loginField.value = usernameSession;
+  }
 
   // Check for saved password cookie and autofill the password field
+  /*
   const savedPassword = getCookie("password");
   if (savedPassword) {
     passwordField.value = savedPassword;
+  }*/
+  
+  // Check for saved password in session storage and autofill the password field
+  const savedPasswordSession = getSessionStorageItem("password");
+  if (savedPasswordSession) {
+    passwordField.value = savedPasswordSession;
   }
 });
 
@@ -53,13 +89,23 @@ loginButton.addEventListener("click", function () {
   const rememberPassword = getRememberPasswordValue();
 
   // Check if the "Remember Password" checkbox is checked
+  /*
   if (rememberPassword) {
     // Set a cookie with the password (use secure practices for storing passwords)
     setCookie("password", password, 30); // Store password for 1 month
   } else {
     // Remove the password cookie if the checkbox is not checked
     setCookie("password", "", -1); // Expire the cookie immediately
+  }*/
+  
+   if (rememberPassword) {
+    // Set a value in session storage with the password
+    setSessionStorageItem("password", password);
+  } else {
+    // Remove the password from session storage if the checkbox is not checked
+    sessionStorage.removeItem("password");
   }
+  
 });
 
 function login() {
@@ -68,6 +114,7 @@ function login() {
   lastName = "";
 
   const username = document.getElementById("Login").value;
+
   const password = document.getElementById("Password").value;
 
   document.getElementById("loginResult").innerHTML = "";
@@ -96,11 +143,24 @@ function login() {
         lastName = jsonObject.LastName;
 
         // Set a cookie for the user's session
+        /*
         const expirationDate = new Date(); // By default, a session cookie
         expirationDate.setHours(expirationDate.getHours() + 1); // Adjust as needed
         setCookie('userId', userId, expirationDate);
         setCookie('firstName', firstName, expirationDate);
         setCookie('lastName', lastName, expirationDate);
+
+        // Set a cookie for the username
+        setCookie('username', username, expirationDate);
+        */
+        
+        // Set values in session storage for the user's session
+        setSessionStorageItem('userId', userId);
+        setSessionStorageItem('firstName', firstName);
+        setSessionStorageItem('lastName', lastName);
+
+        // Set a value in session storage for the username
+        setSessionStorageItem('username', username);
 
         window.location.href = "contact.html";
       }
