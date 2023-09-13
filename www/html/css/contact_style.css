@@ -139,7 +139,7 @@ div h2 {
   text-align: center;
   margin-top: 50px;
   position: relative;
-  display: flex;
+  /* display: flex; */
   justify-content: center; /* Centers items horizontally */
   align-items: center; /* Centers items vertically (optional) */
 }
@@ -392,3 +392,4 @@ h2 {
 .openButton:hover {
   opacity: 1;
 }
+

@@ -15,11 +15,13 @@
         <main>
             <div class="container">
                 <div class="search-box">
-                    <form action="" autocomplete="off">
+                    <form id="search-form" action="" autocomplete="off">
                         <div id="autocomplete-wrapper" class="autocomplete-wrapper">
                             <div class="search-bar">
                                 <input id="automcomplete-input" type="text" placeholder="Search" autocomplete="off">
-                                <button type="submit" class="btn-submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                <button type="submit" class="btn-submit"id="search-button">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
                             </div>
                             <div class="result-box">
                                 <ul class="autocomplete-list">
@@ -33,26 +35,18 @@
                 <!-- Add the polaroid here -->
                 <div class="wrapper">
                     <!-- id="create" -->
-                    <button class="item" onclick="openForm()"> 
+                    <button class="item" id="create"onclick="openForm()"> 
                         <div class="polaroid">
                             <div class="add-contact-btn"><i class="fa-regular fa-user-plus"></i></div>
                             <div class="caption">add a contact</div>
                         </div>
                     </button>
-                    <button class="item"id="polaroid-1"onclick="createWhiteBox('polaroid-1')">
+                    <button class="item"id="polaroid-100"onclick="createWhiteBox('polaroid-1')">
                         <div class="polaroid"><img src="https://image.ibb.co/b8UJBc/administration_architecture_big_ben_221166.jpg">
                             <div class="info"  style="display: none;" >
         
                             </div>
                             <div class="caption">Victoria Morenoo</div>
-                        </div>
-                    </button>
-                    <button class="item" id="polaroid-2"onclick="createWhiteBox('polaroid-2')">
-                        <div class="polaroid"><img src="https://image.ibb.co/mmyvrc/anniversary_balloons_birthday_68369.jpg">
-                            <div class="info" style="display: none;">
-                            
-                            </div>
-                            <div class="caption">Lucas Cruz</div>
                         </div>
                     </button>
                 </div>
