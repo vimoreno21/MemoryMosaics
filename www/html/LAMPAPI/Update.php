@@ -1,3 +1,4 @@
+
 <?php
 
         header('Access-Control-Allow-Origin: *');
@@ -10,58 +11,52 @@
         {
                 returnWithError( $conn->connect_error );
         }
-                if ($inData["FieldName"] == "FirstName")
-                {
-                        $stmt = $conn->prepare("UPDATE Contacts SET FirstName = ? WHERE ID = ?;");
-                        $stmt->bind_param("ss", $inData["NewValue"], $inData["ID"]);
 
-                }
-                else if ($inData["FieldName"] == "LastName")
-                {
-                        $stmt = $conn->prepare("UPDATE Contacts SET LastName = ? WHERE ID = ?;");
-                        $stmt->bind_param("ss", $inData["NewValue"], $inData["ID"]);
-                }
+        $stmt = $conn->prepare("UPDATE Contacts SET FirstName = ? WHERE ID = ?;");
+        $stmt->bind_param("ss", $inData["NewFirstName"], $inData["ID"]);
 
-                else if ($inData["FieldName"] == "Phone")
-                {
-                        $stmt = $conn->prepare("UPDATE Contacts SET Phone = ? WHERE ID = ?;");
-                        $stmt->bind_param("ss", $inData["NewValue"], $inData["ID"]);
-                }
+        $stmt2 = $conn->prepare("UPDATE Contacts SET LastName = ? WHERE ID = ?;");
+        $stmt2->bind_param("ss", $inData["NewLastName"], $inData["ID"]);
 
-                else if ($inData["FieldName"] == "Email")
-                {
-                        $stmt = $conn->prepare("UPDATE Contacts SET Email = ? WHERE ID = ?;");
-                        $stmt->bind_param("ss", $inData["NewValue"], $inData["ID"]);
-                }
+        $stmt3 = $conn->prepare("UPDATE Contacts SET Phone = ? WHERE ID = ?;");
+        $stmt3->bind_param("ss", $inData["NewPhone"], $inData["ID"]);
 
-                $stmt->execute();
+        $stmt4 = $conn->prepare("UPDATE Contacts SET Email = ? WHERE ID = ?;");
+        $stmt4->bind_param("ss", $inData["NewEmail"], $inData["ID"]);
 
-        //      $getAllContactInfo = $conn->prepare("SELECT * from Contacts where ID = ?");
-        //      $getAllContactInfo->bind_param("s", $inData["ID"]);
-        //      $getAllContactInfo->execute();
-        //      $result = $getAllContactInfo->get_result();
+        $stmt->execute();
+        $stmt2->execute();
+        $stmt3->execute();
+        $stmt4->execute();
 
-        //      $row = $result->fetch_assoc();
+        if ($stmt == NULL || $stmt2 == NULL || $stmt3 == NULL || $stmt4 == NULL)
+        {
+                returnWithInfo( "Update operation failed");
+        }
+        else
+        {
+                returnWithInfo("Update success!");
+        }
 
-                if ($stmt == NULL)
-                {
-                        returnWithInfo( "Update operation failed");
-                }
-                else
-                {
-                        returnWithInfo("Update success!");
-                }
+        if ($stmt2 != NULL)
+        {
+                $stmt2->close();
+        }
+        if ($stmt != NULL)
+        {
 
-                if ($getAllContactInfo != NULL)
-                {
-                        $getAllContactInfo->close();
+                $stmt->close();
+        }
+        if ($stmt3 != NULL)
+        {
+                $stmt3->close();
+        }
+        if ($stmt4 != NULL)
+        {
+                $stmt4->close();
+        }
+        $conn->close();
 
-                }
-                if ($stmt != NULL)
-                {
-                        $stmt->close();
-                }
-                $conn->close();
          function getRequestInfo()
          {
                 return json_decode(file_get_contents('php://input'), true);
