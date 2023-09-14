@@ -11,39 +11,40 @@ function closeForm() {
 }
 
 function addContact() {
-  const submitBtn = document.getElementById("add-contact-btn");
-  firstName = "";
-  lastName = "";
-  phoneNumber = "";
-  email = "";
 
-  const firstName = document.getElementById("firstName").value;
-  const lastName = document.getElementById("lastName").value;
-  const email = document.getElementById("email").value;
-  const phoneNumber = document.getElementById("phoneNumber").value;
+  var firstName = document.getElementById("firstName").value;
+  var lastName = document.getElementById("lastName").value;
+  var email = document.getElementById("email").value;
+  var phoneNumber = document.getElementById("phoneNumber").value;
+  var userId = sessionStorage.getItem('userId');
 
-  document.getElementById("contactForm").innerHTML = "";
+  document.getElementById("firstName").value = "";
+  document.getElementById("lastName").value = "";
+  document.getElementById("email").value = "";
+  document.getElementById("phoneNumber").value = "";
 
-  let tmp = {FirstName:firstName,LastName:lastName,Email:email,Phone:phoneNumber};
+  let tmp = {FirstName:firstName,LastName:lastName,Email:email,Phone:phoneNumber,UserID:userId};
   let jsonPayload = JSON.stringify( tmp );
   console.log(jsonPayload);
+  
   let url = urlBase + '/CreateContact.php';
   
   let xhr = new XMLHttpRequest();
 
   xhr.open("POST", url, true);
-  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+  xhr.setRequestHeader("Content-type", "application/json");
   try
     {
       xhr.onreadystatechange = function() 
       {
-
         if (this.readyState == 4 && this.status == 200) 
         {
-          let jsonObject = JSON.parse(this.responseText);
-          userId = jsonObject.ID;
+          console.log(this.responseText)
+          let jsonObject = JSON.parse(this.responseText); // not getting past this
+          console.log("f;askldfjald;sjffdasdasf");
+          returnID = jsonObject.returnID;
       
-          if( returnID < 1 )
+          if( returnID == 0 )
           {		
             document.getElementById("contactForm").innerHTML = "";
             return;
@@ -51,8 +52,6 @@ function addContact() {
       
           firstName = jsonObject.FirstName;
           lastName = jsonObject.LastName;
-  
-          //saveCookie();
     
           window.location.href = "contact.html";
         }
@@ -60,9 +59,11 @@ function addContact() {
 
       xhr.send(jsonPayload);
     }
-  catch(err)
+    catch(err)
     {
-      document.getElementById("loginResult").innerHTML = err.message;
+      //use alert instead
+      //document.getElementById("contactForm").innerHTML = err.message;
+      window.alert("An error occurred: " + err.message);
     }
-
+    window.alert("Contact created successfully!");
 }
