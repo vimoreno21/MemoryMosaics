@@ -1,13 +1,19 @@
 <?php
 	header('Access-Control-Allow-Origin: *');
-	header('Access-Control-Allow-Headers: Content-Type');
+  header('Content-Type: application/json; charset=UTF-8');
+  header('Access-Control-Allow-Methods: GET,POST,PUT,PATCH,DELETE');
+  header('Access-Control-Allow-Headers: Content-Type,Access-Control-Allow-Headers,Authorization,X-Requested-With');
+
+  if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    header('HTTP/1.1 200 OK');
+    exit();
+  }
 
 
 	$inData = getRequestInfo();
  
-  //TODO: CHANGE QUERIES TO THE CORRECT CHANGE CONTACT QUERIES
  
-  	// this info is passed in by the user
+  $curr_ID = $inData['UserID'];
 	$firstName = $inData['FirstName'];
 	$lastName = $inData['LastName'];
   $email = $inData['Email'];
@@ -23,8 +29,6 @@
 
 	else
 	{
-    //get the date last logged in of the current user
-    $curr_ID = $_SESSION['user_id'];
     $lastLogged = $conn->prepare("SELECT * from Users WHERE ID = ?");
 		$lastLogged->bind_param("i", $curr_ID);
     $currLastLogged = "";
@@ -32,22 +36,21 @@
 		if($lastLogged->execute())
 		{
         $curr_user = mysqli_fetch_assoc(mysqli_stmt_get_result($lastLogged));
-        $currLastLogged = $curr_user['DateLastLoggedIn']
+        $currLastLogged = $curr_user['DateLastLoggedIn'];
 		}
 
-    //insert contact
-		$stmt = $conn->prepare("INSERT into Contacts (DateCreated, DateLastLoggedIn, FirstName,LastName,Phone,Email,UserID) VALUES ('$date','$currLastLogged','$firstName','$lastName','$email','$phoneNumber','$curr_ID')");
+		$stmt = $conn->prepare("INSERT into Contacts (DateCreated, DateLastLoggedIn, FirstName,LastName,Phone,Email,UserID) VALUES ('$date','$currLastLogged','$firstName','$lastName','$phoneNumber','$email','$curr_ID')");
     if($stmt->execute()) 
     {
-        returnWithError("");
+        returnWithInfo($firstName, $lastName, "Success!");
     }
 		else
 		{
-			returnWithError("Unable to insert");
+			returnWithError("Please fill out all fields!");
 		}
 
-		$lastLogged->close();
-		$conn->close();
+		if($lastLogged != NULL){$lastLogged->close();}
+		if($conn != NULL){$conn->close();}
 	}
 	
 	function getRequestInfo()
