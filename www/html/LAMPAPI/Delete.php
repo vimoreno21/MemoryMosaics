@@ -4,53 +4,30 @@
 
 
         $inData = getRequestInfo();
-        // this info is passed in by the user
-        $loginData = $inData['Login'];
-        $passwordData = $inData['Password'];
-        $date = date('Y-m-d H:i:s');
-
 
         $conn = mysqli_connect("localhost", "AdminAccount", "wearetesting", "COP4331");
         if (!$conn)
         {
                 die("Connection failed: " . mysqli_connect_error());
-        }        else
-        {
-                $checkLogin = $conn->prepare("SELECT ID,FirstName,LastName FROM Users WHERE Login=? AND Password =?");
-                $checkLogin->bind_param("ss", $loginData, $passwordData);
-
-                $checkLogin->execute();
-
-                $result = $checkLogin->get_result();
-
-                if( $curr_user = $result->fetch_assoc() )
-                {
-                        $update_date_login = $conn->prepare("UPDATE Users SET DateLastLoggedIn = ? where ID = ?");
-                        $update_date_login->bind_param("ss", $date, $curr_user['ID']);
-                        $update_date_login->execute();
-
-      $_SESSION['user_id'] = $curr_user['ID'];
-
-                        returnWithInfo( $curr_user['FirstName'], $curr_user['LastName'], $curr_user['ID'] );
-                        if ($update_date_login != NULL)
-                        {
-                                $update_date_login->close();
-                        }
-                }
-
-
-                else
-                {
-                        returnWithError("No Records Found");
-                }
-
-
-                if ($checkLogin != NULL)
-                {
-                        $checkLogin->close();
-                }
-                $conn->close();
         }
+
+        $stmt = $conn->prepare("DELETE from Contacts WHERE ID = ?;");
+        $stmt->bind_param("s", $inData["ID"]);
+
+        $stmt->execute();
+
+
+
+        if ($stmt != NULL)
+        {
+                returnWithInfo("Deletion was successful.");
+                $stmt->close();
+        }
+        else
+        {
+                returnWithInfo("Deletion operation failed.");
+        }
+        $conn->close();
 
         function getRequestInfo()
         {
@@ -69,10 +46,9 @@
                 sendResultInfoAsJson( $retValue );
         }
 
-        function returnWithInfo( $firstName, $lastName, $id )
+        function returnWithInfo( $result )
         {
-                $retValue = '{"ID":' . $id . ',"FirstName":"' . $firstName . '","LastName":"' . $lastName . '","error":""}';
+                $retValue = '{"result":"' . $result . '"}';
                 sendResultInfoAsJson( $retValue );
         }
-
-?>
+ ?>
