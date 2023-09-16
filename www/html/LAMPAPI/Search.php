@@ -23,6 +23,7 @@ if ($conn->connect_error) {
             "LastName" => array(),
             "Phone" => array(),
             "Email" => array(),
+            "ID" => array(),
             "error" => ""
         );
 
@@ -31,18 +32,18 @@ if ($conn->connect_error) {
             $data["LastName"][] = $row["LastName"];
             $data["Phone"][] = $row["Phone"];
             $data["Email"][] = $row["Email"];
+            $data["ID"][] = $row["ID"];
         }
 
         returnWithInfo($data);
     } else {
-        $stmt = $conn->prepare("SELECT FirstName,LastName,Phone,Email from Contacts where FirstName like ? and UserID = ?
-            UNION SELECT FirstName,LastName,Phone,Email from Contacts where LastName like ? and UserID = ?
-            UNION SELECT FirstName,LastName,Phone,Email from Contacts where Phone like ? and UserID = ? 
-            UNION SELECT FirstName,LastName,Phone,Email from Contacts where Email like ? and UserID = ?");
+        $stmt = $conn->prepare("SELECT FirstName,LastName,Phone,Email,ID from Contacts where FirstName like ? and UserID = ?
+            UNION SELECT FirstName,LastName,Phone,Email,ID from Contacts where LastName like ? and UserID = ?
+            UNION SELECT FirstName,LastName,Phone,Email,ID from Contacts where Phone like ? and UserID = ? 
+            UNION SELECT FirstName,LastName,Phone,Email,ID from Contacts where Email like ? and UserID = ?");
 
         $searchInput = "%" . $inData["search"] . "%";
         $stmt->bind_param("ssssssss", $searchInput, $inData["UserID"], $searchInput, $inData["UserID"], $searchInput, $inData["UserID"], $searchInput, $inData["UserID"]);
-
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -52,6 +53,7 @@ if ($conn->connect_error) {
             "LastName" => array(),
             "Phone" => array(),
             "Email" => array(),
+            "ID" => array(),
             "error" => ""
         );
 
@@ -60,6 +62,7 @@ if ($conn->connect_error) {
             $data["LastName"][] = $row["LastName"];
             $data["Phone"][] = $row["Phone"];
             $data["Email"][] = $row["Email"];
+            $data["ID"][] = $row["ID"];
         }
 
         if (empty($data["FirstName"])) {
