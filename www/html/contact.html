@@ -36,17 +36,9 @@
                 <div class="wrapper">
                     <!-- id="create" -->
                     <button class="item" id="create"onclick="openForm()"> 
-                        <div class="polaroid">
-                            <div class="add-contact-btn"><i class="fa-regular fa-user-plus"></i></div>
-                            <div class="caption">add a contact</div>
-                        </div>
-                    </button>
-                    <button class="item"id="polaroid-100"onclick="createWhiteBox('polaroid-1')">
-                        <div class="polaroid"><img src="https://image.ibb.co/b8UJBc/administration_architecture_big_ben_221166.jpg">
-                            <div class="info"  style="display: none;" >
-        
-                            </div>
-                            <div class="caption">Victoria Morenoo</div>
+                        <div class="polaroid" id="create">
+                            <div class="add-contact-btn"><img src="/images/add_contact.png" style="width: 190px;"></div>
+                            <div class="caption">Add a contact</div>
                         </div>
                     </button>
                 </div>
@@ -56,40 +48,39 @@
         <footer>
             <p>&copy; 2023 Contact Manager</p>
         </footer>
-        <script src="js/contact.js"></script>
-        <script src="js/autocomplete.js"></script>
+        
         <!-- <script src="js/show_info.js"></script> -->
         <!-- Sign Out Button in Top-Right Corner -->
         <a href="index.html" class="sign-out-btn">Sign Out</a>
-        
-        
-        <div class="formPopup" id="contactForm">
-            <form class="formContainer">
-              <h2>Please Enter Contact Information</h2>
-              <label for="firstName">
-                <strong>First Name</strong>
-              </label>
-              <input type="text" id="firstName" placeholder="First Name" name="firstName" required>
-              <label for="lastName">
-                <strong>Last Name</strong>
-              </label>
-              <input type="text" id="lastName" placeholder="Last Name" name="lastName" required>
-              <label for="email">
-                <strong>E-mail</strong>
-              </label>
-              <input type="text" id="email" placeholder="Email" name="email" required>
-              <label for="phoneNumber">
-                <strong>Phone Number</strong>
-              </label>
-              <input type="text" id="phoneNumber" placeholder="Phone Number" name="phoneNumber" required>
-              
-              <button type="submit" class="btn" id="add-contact-btn" onclick="addContact()">Submit</button>
-              <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-            </form>
-        </div>
-
-
             <!-- Content for the white box goes here -->
         </div>
+        <script src="js/autocomplete.js"></script>
+        <script src="js/contact.js"></script>
     </body>
+    
+    <div class="formPopup" id="contactForm">
+        <form class="formContainer">
+          <h2>Please Enter Contact Information</h2>
+          
+          <label for="firstName">
+            <strong>First Name</strong>
+          </label>
+          <input type="text" id="firstName" placeholder="First Name" name="firstName" required>
+          <label for="lastName">
+            <strong>Last Name</strong>
+          </label>
+          <input type="text" id="lastName" placeholder="Last Name" name="lastName" required>
+          <label for="email">
+            <strong>E-mail</strong>
+          </label>
+          <input type="text" id="email" placeholder="Email" name="email" required>
+          <label for="phoneNumber">
+            <strong>Phone Number</strong>
+          </label>
+          <input type="text" id="phoneNumber" placeholder="Phone Number" name="phoneNumber" required>
+          
+          <button type="submit" class="btn" id="add-contact-btn" onclick="addContact()">Submit</button>
+          <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+        </form>
+    </div>
 </html>
