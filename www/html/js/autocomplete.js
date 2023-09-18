@@ -32,9 +32,9 @@ getContactData(userId);
     a) removeAllContactList() - removes
 
 4.  createWhiteBox(id) -> creates the white box with the info 
-    a) openEditForm(user, id) -> opens the ability to change the contact info 
+    a) createEditForm(user, id) -> created the form to edit on every polaroid and doesnt display
+        i. showEditForm(id) -> puts the forms style to display
         i. updateContact(id, first, last, phone, email, callback) -> actually updates in the database 
-        ii. removeEditForm() -> removes the from
     b) deleteContact(user, contactId) -> deletes the contact from database
         i. removePolaroid(contactId) -> removes the polaroid visually 
 
@@ -283,7 +283,7 @@ function createWhiteBox(id) {
     console.log("creating the white box");
     whiteBox.className = 'white-box'; 
     whiteBox.style.display = 'block'; 
-    whiteBox.id = id;
+    whiteBox.id = `white-box-${id}`;
 
     // exit image in the top right corner
     const closeButton = document.createElement('img');
@@ -302,9 +302,11 @@ function createWhiteBox(id) {
 
     // Add a click event listener to the "Edit" button
     editButton.addEventListener('click', () => {
-        console.log("edit clicked");
-        openEditForm(user, id); // Pass the user object to the edit form function
+        console.log("about to show edit form from white box with id = " + id);
+        showEditForm(id);// Pass the user object to the edit form function
+        console.log("finishing showing edit form from white box");
     });
+
 
     // "Delete" button
     const deleteButton = document.createElement('img');
@@ -319,10 +321,10 @@ function createWhiteBox(id) {
         getContactData(userId);
     });
 
-
     // Create user information elements
     const userInfo = document.createElement('div');
     userInfo.className = 'user-info';
+    userInfo.id = `user-info-${id}`;
 
     const nameParagraph = document.createElement('h3');
     nameParagraph.textContent = `Name: ${user.FirstName} ${user.LastName}`;
@@ -352,12 +354,154 @@ function createWhiteBox(id) {
     whiteBox.appendChild(deleteButton);
     whiteBox.appendChild(closeButton);
     wrapper.appendChild(whiteBox);
-    
 
     document.body.appendChild(wrapper);
+
+    console.log("calling create edit form");
+    createEditForm(user, id);
+    console.log("end of create edit form");
     
 }
 
+// new one w all ids 
+// Function to create the edit form for a specific user (hidden by default)
+function createEditForm(user, id) {
+
+    const editButton = document.querySelector(`#edit-button-${id}`);
+    
+
+
+    // Create the form element with a unique ID
+    const editForm = document.createElement('form');
+    editForm.className = 'edit-form';
+    editForm.id = `edit-form-${id}`;
+
+    // Hide the form initially
+    editForm.style.display = 'none'; 
+
+    // Create input fields for editing information
+    const firstNameInput = document.createElement('input');
+    firstNameInput.id = 'firstName';
+    firstNameInput.type = 'text';
+    firstNameInput.value = user.FirstName; // Populate with the existing data
+
+    // Add labels for input fields
+    const firstNameLabel = document.createElement('label');
+    firstNameLabel.textContent = 'First Name:';
+    firstNameLabel.setAttribute('for', 'firstName');
+
+    const lastNameInput = document.createElement('input');
+    lastNameInput.id = 'lastName';
+    lastNameInput.type = 'text';
+    lastNameInput.value = user.LastName;
+
+    const lastNameLabel = document.createElement('label');
+    lastNameLabel.textContent = 'Last Name:';
+    lastNameLabel.setAttribute('for', 'lastName');
+
+    const phoneInput = document.createElement('input');
+    phoneInput.id = 'phone';
+    phoneInput.type = 'tel';
+    phoneInput.value = user.Phone;
+
+    const phoneLabel = document.createElement('label');
+    phoneLabel.textContent = 'Phone:';
+    phoneLabel.setAttribute('for', 'phone');
+
+    const emailInput = document.createElement('input');
+    emailInput.type = 'email';
+    emailInput.value = user.Email;
+    emailInput.id = 'email';
+
+    const emailLabel = document.createElement('label');
+    emailLabel.textContent = 'Email:';
+    emailLabel.setAttribute('for', 'email');
+
+    // Create a "Save Changes" button
+    const saveButton = document.createElement('button');
+    saveButton.textContent = 'Save Changes';
+    saveButton.className = 'save-button';
+    saveButton.id = `save-button-${id}`; // Assign a unique id
+
+    // Add a submit event listener to the form
+    saveButton.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        // Handle saving changes here and update the user object
+        user.FirstName = firstNameInput.value;
+        user.LastName = lastNameInput.value;
+        user.Email = emailInput.value;
+        user.Phone = phoneInput.value;
+
+        // Update the contact information directly in the white box
+        const nameHeader = document.querySelector('.user-info h3:nth-child(1)');
+        const emailHeader = document.querySelector('.user-info h3:nth-child(2)');
+        const phoneHeader = document.querySelector('.user-info h3:nth-child(3)');
+
+        nameHeader.textContent = `Name: ${user.FirstName} ${user.LastName}`;
+        emailHeader.textContent = `Email: ${user.Email}`;
+        phoneHeader.textContent = `Phone: ${user.Phone}`;
+
+        // Call the updateContact function 
+        updateContact(user.ID, user.FirstName, user.LastName, user.Phone, user.Email, function (){
+            // Handle any callback logic here
+            console.log(users);
+            getContactData(userId);
+
+
+            editButton.addEventListener('click', () => {
+                //editForm.style.display = 'block';
+                console.log("about to show edit form from creating form");
+                showEditForm(id);
+                console.log("finishing showing edit form from creating form");
+            });
+
+        });
+
+        // Hide the edit form
+        editForm.style.display = 'none';
+
+        // Show the "Edit" button again
+        editButton.style.display = 'block';
+    });
+
+    // Append input fields, labels, and save button to the form
+    editForm.appendChild(firstNameLabel);
+    editForm.appendChild(firstNameInput);
+
+    editForm.appendChild(lastNameLabel);
+    editForm.appendChild(lastNameInput);
+
+    editForm.appendChild(phoneLabel);
+    editForm.appendChild(phoneInput);
+
+    editForm.appendChild(emailLabel);
+    editForm.appendChild(emailInput);
+
+    editForm.appendChild(saveButton);
+
+    // Append the form to the white box
+    const whiteBox = document.querySelector(`#white-box-${id}`);
+    whiteBox.appendChild(editForm);
+}
+
+// Function to display the edit form for a specific user
+function showEditForm(id) {
+    console.log("id is " + id );
+    // Hide the "Edit" button
+    const editButton = document.querySelector(`#edit-button-${id}`);
+    editButton.style.display = 'none';
+
+    const userInfo = document.querySelector(`#user-info-${id}`);
+    userInfo.style.display = 'none';
+
+    // Show the edit form specific to this user
+    const editForm = document.querySelector(`#edit-form-${id}`);
+    editForm.style.display = 'block';
+
+}
+
+// NOT BEING USED
 // for the edit form
 function openEditForm(user, id) {
 
@@ -370,7 +514,8 @@ function openEditForm(user, id) {
 
     // Create the form element
     const editForm = document.createElement('form');
-    editForm.className = 'edit-form'; // Add a class for styling (optional)
+    editForm.className = 'edit-form'; // Add a class for styling 
+    editForm.id = `edit-form-${id}`;
 
     console.log(user);
 
@@ -416,7 +561,7 @@ function openEditForm(user, id) {
     const saveButton = document.createElement('button');
     saveButton.textContent = 'Save Changes';
     saveButton.className = 'save-button';
-    saveButton.id = `edit-button-${id}`; // Assign a unique id
+    saveButton.id = `save-button-${id}`; // Assign a unique id
     
 
     // Add a submit event listener to the form
@@ -438,18 +583,6 @@ function openEditForm(user, id) {
         emailHeader.textContent = `Email: ${user.Email}`;
         phoneHeader.textContent = `Phone: ${user.Phone}`;
 
-        // Call the function to update the contact on the server
-        // Use a callback to ensure everything runs in order
-        // updateContact(user.ID, user.FirstName, user.LastName, user.Phone, user.Email, function(){
-        //     console.log(users);
-        //     getContactData(userId);
-
-        //     // Remove the edit form after saving
-        //     editForm.remove();
-
-        //     // Show the "Edit" button again
-        //     editButton.style.display = 'block';
-        // });
 
         updateContact(user.ID, user.FirstName, user.LastName, user.Phone, user.Email, function (){
             console.log(users);
@@ -488,7 +621,6 @@ function openEditForm(user, id) {
 
     console.log ("end of edit form");
 }
-
 // Function to remove the edit form in the white box and input fields
 function removeEditForm() 
 {
@@ -593,50 +725,7 @@ function removePolaroid(contactId) {
     whiteBox.style.display = 'none';
     getContactData(userId);
 }
-  
-// duplicate
-// Function to update the contact on the server (implement this)
-function updateContact2(id, first, last, phone, email) {
-    
-    let tmp = {
-        ID: id,
-        FirstName: first,
-        LastName: last,
-        Phone: phone,
-        Email: email,
-    };
-    
-    let jsonPayload = JSON.stringify(tmp);
-    console.log("updating contact " + jsonPayload);
-    console.log(jsonPayload);
 
-    let url = urlBase2 + '/Update2.php';
-
-    let xhr = new XMLHttpRequest();
-
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-    try
-    {
-        xhr.onreadystatechange = function() 
-        {
-            if (this.readyState == 4 && this.status == 200) 
-            {
-
-                let jsonResponse = this.responseText;
-                console.log(jsonResponse);
-                let responseObject = JSON.parse(jsonResponse);
-                console.log(responseObject);
-            }
-        };
-
-        xhr.send(jsonPayload);
-    }
-    catch(err)
-    {
-            console.log("error getting info");
-    }
-}
 
 /*
 function getCookie(name) {
@@ -650,89 +739,3 @@ function getCookie(name) {
   }
   return null;
 }*/
-
-    // // Hide the "Edit" button
-    // const editButton = document.querySelector('.edit-button');
-    // editButton.style.display = 'none';
-
-    // //const editForm = document.createElement('form');
-
-    // // Create input fields for editing information
-    // const firstNameInput = document.createElement('input');
-    // firstNameInput.id = 'firstName';
-    // firstNameInput.type = 'text';
-    // firstNameInput.value = user.FirstName; // Populate with the existing data
-    
-    // // last name
-    // const lastNameInput = document.createElement('input');
-    // lastNameInput.id = 'lastName';
-    // lastNameInput.type = 'text';
-    // lastNameInput.value = user.LastName;
-    
-    // // phone
-    // const phoneInput = document.createElement('input');
-    // phoneInput.id = 'phone';
-    // phoneInput.type = 'tel';
-    // phoneInput.value = user.Phone;
-    
-    // // email
-    // const emailInput = document.createElement('input');
-    // emailInput.type = 'email';
-    // emailInput.value = user.Email;
-    // emailInput.id = 'email';
-
-    // // Create a "Save Changes" button
-    // const saveButton = document.createElement('button');
-    // saveButton.textContent = 'Save Changes';
-    // saveButton.className = 'save-button';
-    // saveButton.addEventListener('click', () => {
-    //     // // Handle saving changes here and update the user object
-    //     user.FirstName = firstNameInput.value;
-    //     user.LastName = lastNameInput.value;
-    //     user.Email = emailInput.value;
-    //     user.Phone = phoneInput.value;
-
-    //     // // Update the contact information directly in the white box
-    //     const nameParagraph = document.querySelector('.user-info p:nth-child(1)');
-    //     const emailParagraph = document.querySelector('.user-info p:nth-child(2)');
-    //     const phoneParagraph = document.querySelector('.user-info p:nth-child(3)');
-
-    //     nameParagraph.textContent = `Name: ${user.FirstName} ${user.LastName}`;
-    //     emailParagraph.textContent = `Email: ${user.Email}`;
-    //     phoneParagraph.textContent = `Phone: ${user.Phone}`;
-
-    //     // Call the function to update the contact on the server
-    //     // use this calback to make sure everyting gets run in order
-        // updateContact(user.ID, user.FirstName, user.LastName, user.Phone, user.Email, function (){
-        //     console.log(users);
-        //     getContactData(userId);
-
-        //     removeEditForm();
-        //     // Show the "Edit" button again
-        //     editButton.style.display = 'block';
-        //     editButton.addEventListener('click', () => {
-        //         openEditForm(user, id);
-        //     });
-        //     //editForm.remove();
-        // });
-        
-    // });
-
-    // // // Append input fields and save button to the white box
-    // const whiteBox = document.querySelector('.white-box'); // Restored this line
-    // whiteBox.appendChild(firstNameInput);
-    // whiteBox.appendChild(lastNameInput);
-    // whiteBox.appendChild(emailInput);
-    // whiteBox.appendChild(phoneInput);
-    // whiteBox.appendChild(saveButton);
-
-
-    // // editForm.appendChild(firstNameInput);
-    // // editForm.appendChild(lastNameInput);
-    // // editForm.appendChild(emailInput);
-    // // editForm.appendChild(phoneInput);
-    // // editForm.appendChild(saveButton);
-
-    // // Append the form to the white box
-    // //const whiteBox = document.querySelector('.white-box');
-    // //whiteBox.appendChild(editForm);

@@ -487,3 +487,50 @@ h2 {
   opacity: 1;
 }
 
+
+/* for the edit form */
+/* CSS for the edit form with two columns */
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px; /* Adjust the max-width as needed */
+  margin: 0 auto; /* Center the form horizontally */
+  padding: 20px;
+  border: 1px solid #ccc; /* Border for the entire form */
+  border-radius: 5px;
+}
+
+/* Styling for form input fields */
+input[type="text"],
+input[type="tel"],
+input[type="email"] {
+  width: 100%;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+/* Styling for the two-column layout */
+.edit-form .form-columns {
+  display: flex;
+  gap: 20px;
+}
+
+/* Styling for individual form columns */
+.edit-form .form-column {
+  flex: 1;
+}
+
+/* Styling for the "Save Changes" button */
+.save-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background-color: #0056b3;
+}
