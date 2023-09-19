@@ -32,13 +32,14 @@
                 </div>
                 
                 <h2>Your Contacts</h2>
-                <!-- Add the polaroid here -->
+                <!-- Add the Polaroid here -->
                 <div class="wrapper">
                     <!-- id="create" -->
                     <button class="item" id="create"onclick="openForm()"> 
-                        <div class="polaroid" id="create">
-                            <div class="add-contact-btn"><img src="/images/add_contact.png" style="width: 190px;"></div>
-                            <div class="caption">Add a contact</div>
+                        <div class="polaroid" id="create" style="margin-top: 20px">
+                        
+                            <div class="add-contact-btn"><img src="/images/add_contact.png" style="width: 210px;"></div>
+                            <div class="caption" style="font-weight: bold; font-size: 20px; transform: translateY(25px);">ADD CONTACT</div>
                         </div>
                     </button>
                 </div>
@@ -60,27 +61,87 @@
     
     <div class="formPopup" id="contactForm">
         <form class="formContainer">
-          <h2>Please Enter Contact Information</h2>
-          
-          <label for="firstName">
-            <strong>First Name</strong>
-          </label>
-          <input type="text" id="firstName" placeholder="First Name" name="firstName" required>
-          <label for="lastName">
-            <strong>Last Name</strong>
-          </label>
-          <input type="text" id="lastName" placeholder="Last Name" name="lastName" required>
-          <label for="email">
-            <strong>E-mail</strong>
-          </label>
-          <input type="text" id="email" placeholder="Email" name="email" required>
-          <label for="phoneNumber">
-            <strong>Phone Number</strong>
-          </label>
-          <input type="text" id="phoneNumber" placeholder="Phone Number" name="phoneNumber" required>
-          
-          <button type="submit" class="btn" id="add-contact-btn" onclick="addContact()">Submit</button>
-          <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+            <h2 style="transform: translateY(-20px);">Please Enter Contact Information</h2>
+            <label for="firstName_add">
+              <strong>First Name</strong>
+            </label>
+            <input type="text" id="firstName_add" placeholder="First Name" name="firstName_add" required>
+            <label for="lastName_add">
+              <strong>Last Name</strong>
+            </label>
+            <input type="text" id="lastName_add" placeholder="Last Name" name="lastName_add" required>
+            <label for="email_add">
+              <strong>E-mail</strong>
+            </label>
+            <input type="text" id="email_add" placeholder="Email" name="email_add" required>
+            <label for="phoneNumber_add">
+              <strong>Phone Number</strong>
+            </label>
+            <input type="text" id="phoneNumber_add" placeholder="Phone Number" name="phoneNumber_add" required>
+            
+            <button type="button" class="btn" id="select-avatar-btn" onclick="openAvatarModal()">Select Avatar</button>
+            <div id="selected-avatar" class="selected-avatar">
+              <img id="avatar-preview" src="/images/a1.png" alt="Selected Avatar" style="display: none;">
+            </div>
+            
+            <!-- <button type="submit" class="btn" id="add-contact-btn" onclick="addContact()">Submit</button> -->
+            <button type="button" class="btn" id="add-contact-btn" onclick="addContact()">Submit</button>
+
+            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
         </form>
     </div>
+    <div class="modal" id="avatarModal">
+      <div class="modal-content">
+        <h2 style="transform: translateY(-20px);">Select an Avatar</h2>
+        <!-- Avatar options here -->
+        <div class="avatar-container">
+        <div class="avatar-option" id="defaultAvatar" hidden>
+            <img src="/images/a1.png" alt="Avatar 1" class="avatar-icon" onclick="selectAvatar('/images/a1.png')">
+        </div>
+        <div class="avatar-option">
+            <img src="/images/a2.png" alt="Avatar 2" class="avatar-icon" onclick="selectAvatar('/images/a2.png')">
+        </div>
+        <div class="avatar-option">
+            <img src="/images/a3.png" alt="Avatar 3" class="avatar-icon" onclick="selectAvatar('/images/a3.png')">
+        </div>
+        <div class="avatar-option">
+            <img src="/images/a4.png" alt="Avatar 4" class="avatar-icon" onclick="selectAvatar('/images/a4.png')">
+        </div>
+        <div class="avatar-option">
+            <img src="/images/a5.png" alt="Avatar 5" class="avatar-icon" onclick="selectAvatar('/images/a5.png')">
+        </div>
+        <div class="avatar-option">
+            <img src="/images/a6.png" alt="Avatar 6" class="avatar-icon" onclick="selectAvatar('/images/a6.png')">
+        </div>
+        <div class="avatar-option">
+            <img src="/images/a7.png" alt="Avatar 7" class="avatar-icon" onclick="selectAvatar('/images/a7.png')">
+        </div>
+        <div class="avatar-option">
+            <img src="/images/a8.png" alt="Avatar 8" class="avatar-icon" onclick="selectAvatar('/images/a8.png')">
+        </div>
+        <div class="avatar-option">
+            <img src="/images/a9.png" alt="Avatar 9" class="avatar-icon" onclick="selectAvatar('/images/a9.png')">
+        </div>
+        <div class="avatar-option">
+            <img src="/images/a10.png" alt="Avatar 10" class="avatar-icon" onclick="selectAvatar('/images/a10.png')">
+        </div>
+        <div class="avatar-option">
+            <img src="/images/a11.png" alt="Avatar 11" class="avatar-icon" onclick="selectAvatar('/images/a11.png')">
+        </div>
+        <div class="avatar-option">
+            <img src="/images/a12.png" alt="Avatar 12" class="avatar-icon" onclick="selectAvatar('/images/a12.png')">
+        </div>
+        <div class="avatar-option">
+            <img src="/images/a13.png" alt="Avatar 13" class="avatar-icon" onclick="selectAvatar('/images/a13.png')">
+        </div>
+        <div class="avatar-option">
+            <img src="/images/a14.png" alt="Avatar 14" class="avatar-icon" onclick="selectAvatar('/images/a14.png')">
+        </div>
+        <div class="avatar-option">
+            <img src="/images/a15.png" alt="Avatar 15" class="avatar-icon"onclick="selectAvatar('/images/a15.png')">
+        </div>
+        <span class="avatar-close" onclick="closeAvatarModal()">&times;</span>
+      </div>
+    </div>
+</div>
 </html>

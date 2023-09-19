@@ -2,16 +2,16 @@ const urlBase2 = 'http://165.227.208.98/LAMPAPI';
 const inputEl = document.querySelector("#automcomplete-input");
 inputEl.addEventListener("input", onInputChange);
 
-// event for the search button
+// event for the search button 
 const searchButton = document.getElementById("search-form");
 searchButton.addEventListener("submit", function (e) {
     e.preventDefault();
-    onSearchBtnClick(e);
+    onSearchBtnClick(e); 
 });
 
 // Call the function to set up the click behavior
 let userId = sessionStorage.getItem('userId'); //getCookie('userId');
-sessionStorage.setItem('img', '/images/contact.png');
+sessionStorage.setItem('img', '/images/polaroid-img.png');
 sessionStorage.setItem('contactId', 0);
 let currContactId = sessionStorage.getItem('contactId');
 console.log("the ID of the current user is ["+ userId + "]");
@@ -23,19 +23,19 @@ getContactData(userId);
 /*
 1. getContactData(userId) gets all the contacts from Search.php
 
-2. onInputChange(), createAutocompleteDropdown(list),
-    removeAutocompleteDropdown(), onContactButtonClick(e),
+2. onInputChange(), createAutocompleteDropdown(list), 
+    removeAutocompleteDropdown(), onContactButtonClick(e), 
     onSearchBtnClick() => are all for the search bar
 
-3. generateContactList(contacts) makes all the polaroids
+3. generateContactList(contacts) makes all the polaroids 
     a) removeAllContactList() - removes
 
-4.  createWhiteBox(id) -> creates the white box with the info
+4.  createWhiteBox(id) -> creates the white box with the info 
     a) createEditForm(user, id) -> created the form to edit on every polaroid and doesnt display
         i. showEditForm(id) -> puts the forms style to display
-        i. updateContact(id, first, last, phone, email, callback) -> actually updates in the database
+        i. updateContact(id, first, last, phone, email, callback) -> actually updates in the database 
     b) deleteContact(user, contactId) -> deletes the contact from database
-        i. removePolaroid(contactId) -> removes the polaroid visually
+        i. removePolaroid(contactId) -> removes the polaroid visually 
 
 */
 
@@ -50,29 +50,35 @@ async function getContactData(userId){
   }
   // to clear the users array
   users.length = 0;
-  console.log("after making users.length = 0 " + users);
+  console.log("after making users.length = 0 ");
+  if(!users.length)
+  {
+    console.log("didnt equal 0");
+    console.log(users);
+  }
+  
 
   let tmp = { UserID: userId, search: ""};
   //console.log(tmp);
   let jsonPayload = JSON.stringify(tmp);
   //console.log(jsonPayload);
-
+  
   let url = urlBase2 + '/Search.php';
   let xhr = new XMLHttpRequest();
   xhr.open("POST", url, true);
   xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
   try
   {
-      xhr.onreadystatechange = function()
+      xhr.onreadystatechange = function() 
       {
-          if (this.readyState == 4 && this.status == 200)
+          if (this.readyState == 4 && this.status == 200) 
           {
               let jsonResponse = this.responseText;
             //   console.log(jsonResponse);
               let responseObject = JSON.parse(jsonResponse);
               console.log(responseObject);
               let numPeople = responseObject.FirstName.length;
-
+             
               // adding people to users array
               for (let i = 0; i < numPeople; i++) {
                   let person = {
@@ -80,7 +86,8 @@ async function getContactData(userId){
                     LastName: responseObject.LastName[i],
                     Phone: responseObject.Phone[i],
                     Email: responseObject.Email[i],
-                    ID: responseObject.ID[i]
+                    ID: responseObject.ID[i],
+                    Avatar: responseObject.Avatar[i]
                   };
                   users.push(person);
               }
@@ -93,10 +100,10 @@ async function getContactData(userId){
   catch(err)
   {
           console.log("error getting info");
-  }
+  }   
 }
 
-// for the search bar, find the contacts
+// for the search bar, find the contacts 
 function onInputChange() {
     // remove whats already there
     removeAutocompleteDropdown();
@@ -152,14 +159,14 @@ function onContactButtonClick(e) {
     removeAutocompleteDropdown();
     removeAllContactList();
     const filteredNames = [];
-
+    
     // try to move it to filtered names
     users.forEach((contact) => {
         contactName = `${contact.FirstName} ${contact.LastName}`;
         if (contactName.toLowerCase().includes(inputEl.value.toLowerCase()) || contactName.substr(0,inputEl.value.length+1).toLowerCase() == inputEl.value.toLowerCase())
         {
             filteredNames.push(contact);
-        }
+        }  
     });
     console.log(filteredNames);
     generateContactList(filteredNames);
@@ -187,17 +194,21 @@ function onSearchBtnClick() {
     generateContactList(filteredNames);
 }
 
-// func for showing and creating all the polaroids
+// func for showing and creating all the polaroids 
 function generateContactList(contacts) {
+    console.log(contacts);
+    console.log("about to remove the polaroids");
     removeAllContactList();
     const itemContainer = document.querySelector(".wrapper");
     console.log("generating contact list function");
 
     // the index in the array -> will be used for that contact ID
-    let id = 0;
+    let id1 = 0;
     // Create contact list items
     contacts.forEach((contact) => {
         const fullName = `${contact.FirstName} ${contact.LastName}`;
+        console.log(fullName);
+        let id = contact.ID;
 
         // making the button a polaroid
         const itemDiv = document.createElement("button");
@@ -206,13 +217,21 @@ function generateContactList(contacts) {
         itemDiv.setAttribute("data-id", id);
         itemDiv.onclick = function () {
             const clickedPolaroidId = this.getAttribute("data-id");
-            console.log("Clicked polaroid ID:", clickedPolaroidId);
+            const userIndex = users.findIndex(user => user.ID === id);
+            console.log("Clicked polaroid ID: " +  clickedPolaroidId +  " or userIndex "+ userIndex + " contact.id " + contact.id);
+            //createWhiteBox(contact.id);
             createWhiteBox(clickedPolaroidId);
         };
 
         const polaroidDiv = document.createElement("div");
         polaroidDiv.className = "polaroid";
         polaroidDiv.id = `polaroid-${id}`; // Set the id attribute based on user.id
+
+        // Create an image element for the contact's avatar
+        const avatarImage = document.createElement("img");
+        avatarImage.src = contact.Avatar || sessionStorage.getItem('img'); // Use the AvatarPath from the database or a default image source
+        avatarImage.className = "avatar"; // Add a CSS class for styling
+        avatarImage.alt = "Avatar";
 
         // Create the "info" element and set its style to initially hidden
         const infoDiv = document.createElement("div");
@@ -221,33 +240,32 @@ function generateContactList(contacts) {
 
         // Create a paragraph element to display the user's name
         const nameParagraph = document.createElement("p");
-        nameParagraph.textContent = `Name: ${contact.name}`; // Replace with the appropriate user data field
+        nameParagraph.textContent = `Name: ${fullName}`; // Replace with the appropriate user data field
 
         // Create a paragraph element to display the user's email
         const emailParagraph = document.createElement("p");
-        emailParagraph.textContent = `Email: ${contact.email}`; // Replace with the appropriate user data field
+        emailParagraph.textContent = `Email: ${contact.Email}`; // Use the correct property name (Email) from the database
 
         // Create a paragraph element to display the user's phone number
         const phoneParagraph = document.createElement("p");
-        phoneParagraph.textContent = `Phone: ${contact.phone}`; // Replace with the appropriate user data field
+        phoneParagraph.textContent = `Phone: ${contact.Phone}`; // Use the correct property name (Phone) from the database
 
         // Add the name, email, and phone paragraphs to the "info" element
         infoDiv.appendChild(nameParagraph);
         infoDiv.appendChild(emailParagraph);
         infoDiv.appendChild(phoneParagraph);
 
-        const image = document.createElement("img");
-        image.src = sessionStorage.getItem('img');
-
         const captionDiv = document.createElement("div");
         captionDiv.className = "caption";
         captionDiv.textContent = fullName;
 
-        polaroidDiv.appendChild(image);
+        // Append the avatar image to the polaroid
+        polaroidDiv.appendChild(avatarImage);
         polaroidDiv.appendChild(captionDiv);
+
         itemDiv.appendChild(polaroidDiv);
         itemContainer.appendChild(itemDiv);
-        id++;
+        id1++;
     });
 }
 
@@ -258,7 +276,7 @@ function removeAllContactList() {
 
     for (let i = children.length - 1; i >= 0; i--) {
         const child = children[i];
-        if (child.id !== "create") {
+        if (child.id !== "create") { 
             itemContainer.removeChild(child);
         }
     }
@@ -266,7 +284,18 @@ function removeAllContactList() {
 
 // the white pop up box when clicking a contact polaroid
 function createWhiteBox(id) {
-    const user = users[id];
+    //const user = users[id];
+    // const id = id1;
+    console.log("in create white box ths user is and id is : " + id);
+    // const user = users.find(user => user.ID === id);
+
+    let user = null;
+    for (const user_temp of users) {
+        if (user_temp.ID == id) {
+            user = user_temp;
+            break; // Exit the loop once the user is found
+        }
+    }
     console.log(user);
     if (!user) {
         console.error("User not found.");
@@ -280,8 +309,8 @@ function createWhiteBox(id) {
     // showing the white box
     const whiteBox = document.createElement('div');
     console.log("creating the white box");
-    whiteBox.className = 'white-box';
-    whiteBox.style.display = 'block';
+    whiteBox.className = 'white-box'; 
+    whiteBox.style.display = 'block'; 
     whiteBox.id = `white-box-${id}`;
 
 
@@ -296,12 +325,11 @@ function createWhiteBox(id) {
         console.log("about to show edit form from white box with id = " + id);
         showEditForm(id);// Pass the user object to the edit form function
         console.log("finishing showing edit form from white box");
-
     });
 
     // exit image in the top right corner
     const closeButton = document.createElement('img');
-    closeButton.src = '/images/exit.png';
+    closeButton.src = '/images/exit.png'; 
     closeButton.className = 'exit-button';
     closeButton.addEventListener('click', () => {
         whiteBox.style.display = 'none';
@@ -323,7 +351,7 @@ function createWhiteBox(id) {
         else {
             console.log("not found for save");
         }
-
+            
         if (document.querySelector(`#email`))
         {
             emailInput = document.querySelector(`#email`);
@@ -341,7 +369,7 @@ function createWhiteBox(id) {
         else {
             console.log("not found for phone");
         }
-
+        
         if (document.querySelector(`#lastName`))
         {
             lastNameInput = document.querySelector(`#lastName`);
@@ -368,6 +396,7 @@ function createWhiteBox(id) {
             console.log("not found for edit");
         }
         console.log("getting rid of white box");
+        window.location.reload();
     });
 
     // "Delete" button
@@ -380,7 +409,8 @@ function createWhiteBox(id) {
     deleteButton.addEventListener('click', () => {
         console.log("calling delete contact");
         deleteContact(user, id);
-        getContactData(userId);
+        //window.location.reload();
+        //getContactData(userId);
     });
 
     // Create user information elements
@@ -402,7 +432,8 @@ function createWhiteBox(id) {
     imageWrapper.className = 'image-wrapper';
 
     const userImage = document.createElement('img');
-    userImage.src = sessionStorage.getItem('img'); // Set the image source based on your requirements
+    userImage.src = user.Avatar;
+    userImage.className = 'avatar';
 
     // Append user information and image to the white box
     userInfo.appendChild(nameParagraph);
@@ -411,7 +442,7 @@ function createWhiteBox(id) {
 
     whiteBox.appendChild(userImage);
     whiteBox.appendChild(userInfo);
-
+    
     whiteBox.appendChild(editButton);
     whiteBox.appendChild(deleteButton);
     whiteBox.appendChild(closeButton);
@@ -419,7 +450,7 @@ function createWhiteBox(id) {
 
     document.body.appendChild(wrapper);
 
-
+    
     // if (!(document.querySelector(`#edit-form-${id}`)))
     // {
         console.log("calling create edit form");
@@ -430,10 +461,10 @@ function createWhiteBox(id) {
     // {
     //     console.log("didnt calit");
     // }
-
+    
 }
 
-// new one w all ids
+// new one w all ids 
 // Function to create the edit form for a specific user (hidden by default)
 function createEditForm(user, id) {
 
@@ -446,7 +477,7 @@ function createEditForm(user, id) {
     editForm.id = `edit-form-${id}`;
 
     // Hide the form initially
-    editForm.style.display = 'none';
+    editForm.style.display = 'none'; 
 
     // Create input fields for editing information
     const firstNameInput = document.createElement('input');
@@ -511,7 +542,7 @@ function createEditForm(user, id) {
         emailHeader.textContent = `Email: ${user.Email}`;
         phoneHeader.textContent = `Phone: ${user.Phone}`;
 
-        // Call the updateContact function
+        // Call the updateContact function 
         updateContact(user.ID, user.FirstName, user.LastName, user.Phone, user.Email, function (){
             // Handle any callback logic here
             console.log(users);
@@ -547,7 +578,7 @@ function createEditForm(user, id) {
 
     editForm.appendChild(emailLabel);
     editForm.appendChild(emailInput);
-
+    
     editForm.appendChild(saveButton);
 
     // Append the form to the white box
@@ -590,10 +621,10 @@ async function updateContact(id, first, last, phone, email, callback) {
     let url = urlBase2 + '/Update.php';
 
     let xhr = new XMLHttpRequest();
-
+    
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-
+    
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
@@ -601,7 +632,7 @@ async function updateContact(id, first, last, phone, email, callback) {
                 console.log("Response: " + jsonResponse);
                 let responseObject = JSON.parse(jsonResponse);
                 console.log("Parsed Response: ", responseObject);
-
+            
                 // Call the callback function to indicate that the update is complete
                 if (typeof callback === 'function') {
                     callback();
@@ -622,15 +653,15 @@ async function deleteContact(user, contactId) {
     const xhr = new XMLHttpRequest();
 
     url = urlBase2 + '/Delete.php';
-
+  
     xhr.open('POST', url, true);
     xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
-
+  
     // Create an object with the data you want to send to the server
     const data = {
       ID: user.ID,
     };
-
+  
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
@@ -645,21 +676,21 @@ async function deleteContact(user, contactId) {
         }
       }
     };
-
+  
     xhr.send(JSON.stringify(data));
 }
 
-// removing the polaroid for the delete
+// removing the polaroid for the delete 
 function removePolaroid(contactId) {
     const polaroidElement = document.querySelector(`#polaroid-${contactId}`);
     if (polaroidElement) {
       polaroidElement.remove();
     }
-    const whiteBox = document.querySelector('.white-box');
+    const whiteBox = document.querySelector('.white-box'); 
     whiteBox.style.display = 'none';
     getContactData(userId);
 }
-
+  
 
 /*
 function getCookie(name) {

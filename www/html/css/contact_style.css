@@ -29,6 +29,7 @@ div h2 {
     align-items: center;
     justify-content: center;
 }
+
 /* for the title */
 .title-box {
   background: #FFF;
@@ -49,6 +50,108 @@ div h2 {
   justify-content: center;
   width: 100%;
   flex-direction: column;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    position: relative;
+    z-index: 13;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Style for the selected avatar */
+
+.avatar {
+    width: 200px !important; /* Adjust the width and height as needed */
+    height: 200px !important;
+    transform: translateY(10px);
+}
+.selected-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#avatar-preview {
+    width: 100px; /* Adjust the width as needed */
+    height: auto;
+    margin-bottom: 10px; /* Add space between the avatar and form fields */
+}
+
+.avatar-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.avatar-option {
+    flex: 0 0 calc(20% - 10px); /* 20% width for each avatar with a small gap between them */
+    margin: 5px; /* Adjust the gap between avatars as needed */
+    text-align: center;
+}
+
+.avatar-option img {
+    width: 100%; /* Make the avatars fill their container */
+    cursor: pointer;
+}
+
+.avatar-icon {
+    width: 100px;
+    height: auto;
+    cursor: pointer;
+    outline: 2px solid transparent;
+    transition: outline-color 0.2s ease; 
+    transition: background-color 0.2s ease;
+}
+
+.avatar-icon:hover {
+    outline-color: #6b38ff;
+    background-color: #d6bbfc;
+}
+
+.avatar-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #888;
+}
+
+.avatar-close:hover {
+    color: #000;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 /* where you type to search */
@@ -140,24 +243,36 @@ div h2 {
   text-align: center;
   margin-top: 50px;
   position: relative;
-  /* display: flex; */
+  display: flex;
   justify-content: center; /* Centers items horizontally */
   align-items: center; /* Centers items vertically (optional) */
+  flex-wrap: wrap;
+  /* justify-content: space-between; */
 }
 
 /* white polaroid */
 .polaroid {
-  background: #fff;
-  padding: 1.5rem;
+  flex: 0 0 calc(33.33% - 20px);
+  background-image: url('/images/polaroid-img.png');
+  background-position: center;
+  background-size: 102%;
+  background-color: transparent;
+  padding: 0.7rem;
   box-shadow: 0 0.2rem 30rem rgba(0,0,0,0.2);
+  text-align: center; /* Center the content horizontally */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 /* image on polaroid */
-.polaroid > img{
-  max-width: 100%; /* Set the maximum width to 50% of the parent container */
-  height: auto; /* Maintain the aspect ratio */
+.polaroid > img {
+  margin: 0;
+  width: 100%; /* Make the image fill the entire container width */
+  height: 100%; /* Make the image fill the entire container height */
   display: block; /* Remove any default inline spacing */
-  margin: 0 auto; /* Center the image horizontally */
 }
 
 .caption {
@@ -313,7 +428,6 @@ h2 {
   padding: 10px 0; /* Add some padding to space it from the content */
   text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black; /* Create a black outline */
 }
-
 
 /* CSS for the white box */
 .white-box {
@@ -529,6 +643,9 @@ input[type="email"] {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  /* position: relative; */
+  bottom: 0; /* Adjust as needed */
+  right: 20;
 }
 
 .save-button:hover {
