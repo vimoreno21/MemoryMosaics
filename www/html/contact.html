@@ -36,10 +36,10 @@
                 <div class="wrapper">
                     <!-- id="create" -->
                     <button class="item" id="create"onclick="openForm()"> 
-                        <div class="polaroid" id="create" style="margin-top: 20px">
+                        <div class="polaroid" id="create">
                         
-                            <div class="add-contact-btn"><img src="/images/add_contact.png" style="width: 210px;"></div>
-                            <div class="caption" style="font-weight: bold; font-size: 20px; transform: translateY(25px);">ADD CONTACT</div>
+                            <div class="add-contact-btn"><img src="/images/add_contact.png" style="width: 80%; margin: 0 auto; margin-top: 30px; margin-bottom: 30px; overflow: hidden;"></div>
+                            <div class="caption" style="font-weight: bold; font-size: 20px;">ADD CONTACT</div>
                         </div>
                     </button>
                 </div>
@@ -63,24 +63,24 @@
         <form class="formContainer">
             <h2 style="transform: translateY(-20px);">Please Enter Contact Information</h2>
             <label for="firstName_add">
-              <strong>First Name</strong>
+              <strong>First Name *</strong>
             </label>
             <input type="text" id="firstName_add" placeholder="First Name" name="firstName_add" required>
             <label for="lastName_add">
-              <strong>Last Name</strong>
+              <strong>Last Name </strong><em>(optional)</em>
             </label>
-            <input type="text" id="lastName_add" placeholder="Last Name" name="lastName_add" required>
+            <input type="text" id="lastName_add" placeholder="Last Name" name="lastName_add">
             <label for="email_add">
-              <strong>E-mail</strong>
+              <strong>E-mail</strong><em> (optional)</em>
             </label>
-            <input type="text" id="email_add" placeholder="Email" name="email_add" required>
+            <input type="text" id="email_add" placeholder="Email" name="email_add">
             <label for="phoneNumber_add">
-              <strong>Phone Number</strong>
+              <strong>Phone Number *</strong>
             </label>
             <input type="text" id="phoneNumber_add" placeholder="Phone Number" name="phoneNumber_add" required>
             
             <button type="button" class="btn" id="select-avatar-btn" onclick="openAvatarModal()">Select Avatar</button>
-            <div id="selected-avatar" class="selected-avatar">
+            <div id="selected-avatar" class="selected-avatar" hidden>
               <img id="avatar-preview" src="/images/a1.png" alt="Selected Avatar" style="display: none;">
             </div>
             
